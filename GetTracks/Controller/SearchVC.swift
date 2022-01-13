@@ -142,7 +142,7 @@ extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
                                         imageUrl: album.artworkUrl100.replacingOccurrences(of: "100x100bb", with: "500x500bb"),
                                         id: album.collectionId, artist: album.artistName)
                 })
-                self.albumList = albumForViewList.sorted(by: {$0.name < $1.name})
+                self.albumList = albumForViewList
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
