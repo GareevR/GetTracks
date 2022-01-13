@@ -136,7 +136,6 @@ extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
         self.collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
         let anonymousFunction = {
             (fetchedAlbumList: [Album]) in
-            DispatchQueue.global(qos: .background).async {
                 let albumForViewList = fetchedAlbumList.map({
                     album in
                     return AlbumForView(name: album.collectionName,
@@ -147,9 +146,10 @@ extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
-            }
         }
-        AlbumAPI.shared.fetchAlbums(completionHandler: anonymousFunction, searchText: text )
+        DispatchQueue.global(qos: .background).async {
+            AlbumAPI.shared.fetchAlbums(completionHandler: anonymousFunction, searchText: text )
+        }
         
         // Add to history database
         if writeToHistory {
@@ -181,8 +181,6 @@ extension SearchVC {
         // Fetch the data from CoreData
         do {
             self.history = try context.fetch(SearchHistory.fetchRequest())
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData
         } catch {
             print("Unable to fetch data from CoreData")
         }
