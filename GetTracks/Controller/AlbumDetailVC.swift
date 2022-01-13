@@ -62,7 +62,9 @@ class AlbumDetailVC: UIViewController {
                 }
             }
         }
-        TracklistAPI.shared.fetchTracklist(completionHandler: anonymousFunction, collectionId: album.id)
+        DispatchQueue.global(qos: .background).async {
+            TracklistAPI.shared.fetchTracklist(completionHandler: anonymousFunction, collectionId: self.album.id)
+        }
     }
     
     func setupAlbumInfoView() {
