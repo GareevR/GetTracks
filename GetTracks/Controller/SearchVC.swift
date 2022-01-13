@@ -20,7 +20,6 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
         // Do any additional setup after loading the view.
         self.navigationItem.title = "Search"
         
-        searchController.searchResultsUpdater = self
         searchController.searchBar.placeholder = "Search albums"
         searchController.searchBar.delegate = self
         collectionView.backgroundColor = .systemGray6
@@ -103,31 +102,9 @@ class SearchVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
 }
 
-extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
-    
-    // MARK: Option 1 - online results updating
-    
-    func updateSearchResults(for searchController: UISearchController) {
-//        guard let text = searchController.searchBar.text else {
-//            return
-//        }
-//        let anonymousFunction = {
-//            (fetchedAlbumList: [Album]) in
-//            DispatchQueue.main.async {
-//                let albumForViewList = fetchedAlbumList.map({
-//                    album in
-//                    return AlbumForView(name: album.collectionName,
-//                                        imageUrl: album.artworkUrl100.replacingOccurrences(of: "100x100bb", with: "500x500bb"),
-//                                        id: album.collectionId, artist: album.artistName)
-//                })
-//                self.albumList = albumForViewList.sorted(by: {$0.name < $1.name})
-//                self.collectionView.reloadData()
-//            }
-//        }
-//        AlbumAPI.shared.fetchAlbums(completionHandler: anonymousFunction, searchText: text )
-    }
+extension SearchVC: UISearchBarDelegate {
         
-    // MARK: Option 2 - update results after search button clicked
+    // MARK: Update results after search button clicked
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         guard let text = searchBar.text else {
@@ -148,7 +125,7 @@ extension SearchVC: UISearchResultsUpdating, UISearchBarDelegate {
                 }
         }
         DispatchQueue.global(qos: .background).async {
-            AlbumAPI.shared.fetchAlbums(completionHandler: anonymousFunction, searchText: text )
+            AlbumAPI.shared.fetchAlbums(completionHandler: anonymousFunction, searchText: text)
         }
         
         // Add to history database

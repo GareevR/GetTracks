@@ -20,6 +20,7 @@ class AlbumDetailVC: UIViewController {
     let backgroundColor: UIColor = .white
     let textColor: UIColor = .black
     
+    let spinner = UIActivityIndicatorView(style: .medium)
     let tableView = UITableView()
     var safeArea: UILayoutGuide!
     
@@ -58,13 +59,29 @@ class AlbumDetailVC: UIViewController {
                 }
                 self.tracklist = tracklistForView
                 DispatchQueue.main.async {
+                    self.removeSpinner()
                     self.tableView.reloadData()
                 }
             }
         }
+        addSpinner()
         DispatchQueue.global(qos: .background).async {
             TracklistAPI.shared.fetchTracklist(completionHandler: anonymousFunction, collectionId: self.album.id)
         }
+    }
+    
+    func addSpinner() {
+        view.addSubview(spinner)
+        
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.centerXAnchor.constraint(equalTo: tableView.centerXAnchor).isActive = true
+        spinner.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 20).isActive = true
+        
+        spinner.startAnimating()
+    }
+    
+    func removeSpinner() {
+        spinner.removeFromSuperview()
     }
     
     func setupAlbumInfoView() {
@@ -78,15 +95,6 @@ class AlbumDetailVC: UIViewController {
         albumInfoView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -view.frame.height / 2).isActive = true
         albumInfoView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         albumInfoView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        
-        albumInfoView.addSubview(separator)
-        separator.backgroundColor = textColor
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        separator.bottomAnchor.constraint(equalTo: albumInfoView.bottomAnchor).isActive = true
-        separator.leadingAnchor.constraint(equalTo: albumInfoView.leadingAnchor).isActive = true
-        separator.widthAnchor.constraint(equalToConstant: view.frame.width).isActive = true
-        separator.heightAnchor.constraint(equalToConstant: 5).isActive = true
-        separator.isHidden = true
     }
     
     func setupImageView() {

@@ -118,8 +118,8 @@
 		5A6C5195278E661A0050F443 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5A6C5196278E663C0050F443 /* AlbumCell.swift */,
 				5A6C51A2278E67030050F443 /* AlbumImageView.swift */,
+				5A6C5196278E663C0050F443 /* AlbumCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
